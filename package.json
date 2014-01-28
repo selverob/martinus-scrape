@@ -12,6 +12,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Róbert Selvek",
-  "license": "BSD"
+  "author": "Róbert Selvek <robert.selvek@gmail.com>",
+  "license": "BSD",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sellweek/martinus-scrape.git"
+  },
+  "engines": {
+    "node": ">=0.8"
+  }
 }
