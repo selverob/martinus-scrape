@@ -1,6 +1,6 @@
 {
-  "name": "martinus",
-  "version": "0.0.0",
+  "name": "martinus-scrape",
+  "version": "1.0.0",
   "description": "A scraper of Martinus.sk book info",
   "main": "index.js",
   "dependencies": {
