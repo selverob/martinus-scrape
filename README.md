@@ -1,5 +1,7 @@
-#Martinus-scrape
-Martinus-scrape is a package that lets you download book data by ISBN from [Martinus.sk](http://martinus.sk) online bookshop.
+#Martinus-scrape 
+
+Martinus-scrape is a package that lets you download book data by ISBN from
+[Martinus.sk](http://martinus.sk) online bookshop.
 
 ##Usage
 ```JavaScript
