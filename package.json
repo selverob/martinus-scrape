@@ -1,0 +1,17 @@
+{
+  "name": "martinus",
+  "version": "0.0.0",
+  "description": "A scraper of Martinus.sk book info",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "~0.13.1",
+    "request": "~2.33.0",
+    "iconv-lite": "~0.2.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Róbert Selvek",
+  "license": "BSD"
+}
