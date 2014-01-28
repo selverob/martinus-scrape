@@ -46,7 +46,7 @@ var scrape_book_page = function(bookURL, cb) {
 }
 
 exports.getBook = function(isbn, cb) {
-	get_book_URL(isbn.replace("-", ""), function(err, url) {
+	get_book_URL(isbn.replace(new RegExp("-", "g"), ""), function(err, url) {
 		if (err != null) {
 			cb(err);
 			return
@@ -61,11 +61,3 @@ exports.getBook = function(isbn, cb) {
 		})
 	});
 }
-
- exports.getBook("978805124230", function(err, b) {
- 	if (err) {
- 		console.log("ERROR: " + err);
- 		return
- 	}
- 	console.log(b);
- })
