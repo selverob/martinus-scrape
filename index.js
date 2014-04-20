@@ -4,6 +4,7 @@ var request = require("request")
 	, qs = require("querystring")
 	, async = require("async");
 
+//Only returns URLs of the first 20 books found.
 var getBookURL = function(isbn, cb) {
 	var address = "http://martinus.sk?" + qs.stringify({
 			uMod: "list",
@@ -30,6 +31,36 @@ var getBookURL = function(isbn, cb) {
 	});
 }
 
+var getISBN = function($) {
+	var isbn = ""
+	var specs = $("ul.square > li");
+	specs.each(function(i, elem) {
+		var match = /ISBN: (.*)/.exec(this.text());
+		if (match) {
+			isbn = match[1];
+		}
+	});
+	return isbn;
+}
+
+var getPages = function($) {
+	var pages = 0;
+	var pagesMatch = /(\d*) strán/.exec($(".specification").text())
+	if (pagesMatch) {
+		pages = parseInt(pagesMatch[1]);
+	}
+	return pages;
+}
+
+var getPubYear = function($) {
+	var pubYear = 0;
+	var pubYearMatch = /\d\d\d\d/.exec($(".subtitle"))
+	if (pubYearMatch) {
+		pubYear = parseInt(pubYearMatch[0]);
+	}
+	return pubYear;
+}
+
 var scrapeBookPages = function(bookURLs, cb) {
 	var scrapePage = function(bookURL, cb) {
 		request.get(bookURL, {encoding: null}, function(err, res, body) {
@@ -39,13 +70,16 @@ var scrapeBookPages = function(bookURLs, cb) {
 			}
 			var utfStr = iconv.decode(body, "win1250");
 			var $ = cheerio.load(utfStr);
+
+
 			var book = {
 				title: $("h1[itemprop=name]").text().trim(),
 				author: $(".subtitle > .author  strong").text(),
 				publisher: $(".publisher > a").text(),
-				pubYear: /\d\d\d\d/.exec($(".subtitle"))[0],
+				ISBN: getISBN($),
+				pubYear: getPubYear($),
 				price: parseFloat($(".oldPrice > strong").text().replace(",", ".")),
-				pages: parseInt(/(\d*) strán/.exec($(".specification").text())[1]),
+				pages: getPages($),
 				imageUrl: "http://martinus.sk" + $(".detailImageHolder > a").attr("href")
 			}
 			cb(null, book);
@@ -55,8 +89,8 @@ var scrapeBookPages = function(bookURLs, cb) {
 }
 
 
-exports.getBook = function(isbn, cb) {
-	getBookURL(isbn.replace(new RegExp("-", "g"), ""), function(err, urls) {
+exports.getBook = function(searchTerm, cb) {
+	getBookURL(searchTerm, function(err, urls) {
 		if (err != null) {
 			cb(err);
 			return
@@ -66,10 +100,11 @@ exports.getBook = function(isbn, cb) {
 				cb(err);
 				return
 			}
-			books.forEach(function (book) {
-				book.ISBN = isbn;
-			});
 			cb(null, books);
 		})
 	});
+}
+
+exports.normalizeISBN = function(ISBN) {
+	return isbn.replace(new RegExp("-", "g"), "");
 }
