@@ -6,7 +6,8 @@
   "dependencies": {
     "cheerio": "~0.13.1",
     "request": "~2.33.0",
-    "iconv-lite": "~0.2.11"
+    "iconv-lite": "~0.2.11",
+    "async": "~0.2.10"
   },
   "devDependencies": {},
   "scripts": {
