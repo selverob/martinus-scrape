@@ -39,7 +39,8 @@ var scrape_book_page = function(bookURL, cb) {
 			publisher: $(".publisher > a").text(),
 			pubYear: /\d\d\d\d/.exec($(".subtitle"))[0],
 			price: parseFloat($(".oldPrice > strong").text().replace(",", ".")),
-			pages: parseInt(/(\d*) strán/.exec($(".specification").text())[1])
+			pages: parseInt(/(\d*) strán/.exec($(".specification").text())[1]),
+			imageUrl: "http://martinus.sk" + $(".detailImageHolder > a").attr("href")
 		}
 		cb(null, book)
 	});

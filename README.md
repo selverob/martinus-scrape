@@ -20,5 +20,6 @@ publisher: 'Pan Books',
 pubYear: '2009',
 price: 11.8,
 pages: 180,
-ISBN: '9780330508537' }
+ISBN: '9780330508537',
+imageUrl: 'http://martinus.sk/data/tovar/_l/93/l93292.jpg' }
 ```
