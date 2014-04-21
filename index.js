@@ -61,33 +61,39 @@ var getPubYear = function($) {
 	return pubYear;
 }
 
-var scrapeBookPages = function(bookURLs, cb) {
-	var scrapePage = function(bookURL, cb) {
-		request.get(bookURL, {encoding: null}, function(err, res, body) {
-			if (err || res.statusCode != 200) {
-				cb(err, null);
-				return
-			}
-			var utfStr = iconv.decode(body, "win1250");
-			var $ = cheerio.load(utfStr);
-
-
-			var book = {
-				title: $("h1[itemprop=name]").text().trim(),
-				author: $(".subtitle > .author  strong").text(),
-				publisher: $(".publisher > a").text(),
-				ISBN: getISBN($),
-				pubYear: getPubYear($),
-				price: parseFloat($(".oldPrice > strong").text().replace(",", ".")),
-				pages: getPages($),
-				imageUrl: "http://martinus.sk" + $(".detailImageHolder > a").attr("href")
-			}
-			cb(null, book);
-		});
+var getPrice = function($) {
+	var oldPrice = parseFloat($(".oldPrice > strong").text().replace(",", "."));
+	if (!isNaN(oldPrice)) {
+		return oldPrice;
 	}
-	async.map(bookURLs, scrapePage, cb);
+	var price = parseFloat($(".price > strong").text().replace(",", "."));
+	return price;
 }
 
+var scrapeBookPage = function(bookURL, cb) {
+	request.get(bookURL, {encoding: null}, function(err, res, body) {
+		if (err || res.statusCode != 200) {
+			cb(err, null);
+			return
+		}
+		var utfStr = iconv.decode(body, "win1250");
+		var $ = cheerio.load(utfStr);
+
+
+		var book = {
+			title: $("h1[itemprop=name]").text().trim(),
+			author: $(".subtitle > .author  strong").text(),
+			publisher: $(".publisher > a").text(),
+			ISBN: getISBN($),
+			pubYear: getPubYear($),
+			description: $("span[itemprop=description]").text().trim().replace(new RegExp("\r\n", "g"), "\n"),
+			price: getPrice($),
+			pages: getPages($),
+			imageUrl: "http://martinus.sk" + $(".detailImageHolder > a").attr("href")
+		};
+		cb(null, book);
+	});
+}
 
 exports.getBook = function(searchTerm, cb) {
 	getBookURL(searchTerm, function(err, urls) {
@@ -95,13 +101,7 @@ exports.getBook = function(searchTerm, cb) {
 			cb(err);
 			return
 		}
-		scrapeBookPages(urls, function(err, books) {
-			if (err != null) {
-				cb(err);
-				return
-			}
-			cb(null, books);
-		})
+		async.map(urls, scrapeBookPage, cb);
 	});
 }
 
