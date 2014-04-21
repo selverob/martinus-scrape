@@ -89,7 +89,8 @@ var scrapeBookPage = function(bookURL, cb) {
 			description: $("span[itemprop=description]").text().trim().replace(new RegExp("\r\n", "g"), "\n"),
 			price: getPrice($),
 			pages: getPages($),
-			imageUrl: "http://martinus.sk" + $(".detailImageHolder > a").attr("href")
+			imageUrl: "http://martinus.sk" + $(".detailImageHolder > a").attr("href"),
+			url: bookURL
 		};
 		cb(null, book);
 	});
@@ -106,5 +107,5 @@ exports.getBook = function(searchTerm, cb) {
 }
 
 exports.normalizeISBN = function(ISBN) {
-	return isbn.replace(new RegExp("-", "g"), "");
+	return ISBN.replace(new RegExp("-", "g"), "");
 }
