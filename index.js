@@ -2,14 +2,15 @@ var request = require("request")
 	, iconv = require("iconv-lite")
 	, cheerio = require("cheerio")
 	, qs = require("querystring")
-	, async = require("async");
+	, async = require("async")
+	, diacritics = require("./diacritics.js");
 
 //Only returns URLs of the first 20 books found.
-var getBookURL = function(isbn, cb) {
+var getBookURL = function(searchTerm, cb) {
 	var address = "http://martinus.sk?" + qs.stringify({
 			uMod: "list",
 			uTyp: "search",
-			uQ: isbn
+			uQ: diacritics.remove(searchTerm)
 		});
 	request.get(address, {encoding: null}, function(err, res, body) {
 		if (err || res.statusCode != 200) {
