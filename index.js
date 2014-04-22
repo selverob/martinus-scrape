@@ -54,7 +54,7 @@ var getPages = function($) {
 }
 
 var getPubYear = function($) {
-	var pubYear = 0;
+	var pubYear = undefined;
 	var pubYearMatch = /\d\d\d\d/.exec($(".subtitle"))
 	if (pubYearMatch) {
 		pubYear = parseInt(pubYearMatch[0]);
