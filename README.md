@@ -19,7 +19,7 @@ m.getBook(m.normalizeISBN("80-7145-606-3"), function(err, book) {
 prints
 ```JavaScript
 [ { title: 'Pán Prsteňov - kolekcia I. II. III.',
-    author: 'J.R.R. Tolkien',
+    authors: ['J.R.R. Tolkien'],
     publisher: 'Slovart',
     ISBN: '8071456063',
     pubYear: 2002,
@@ -29,7 +29,7 @@ prints
     imageUrl: 'http://martinus.sk/data/tovar/_l/11/l11304.jpg',
     url: 'http://www.martinus.sk/?uItem=11304' },
   { title: 'Pán Prsteňov I. - Spoločenstvo Prsteňa',
-    author: 'J.R.R. Tolkien',
+    authors: ['J.R.R. Tolkien'],
     publisher: 'Slovart',
     ISBN: '8071456063',
     pubYear: 2001,

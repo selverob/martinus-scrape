@@ -71,6 +71,14 @@ var getPrice = function($) {
 	return price;
 }
 
+var getAuthors = function($) {
+	var authors = [];
+	$(".subtitle > .author  strong").each(function(index) {
+		authors[index] = this.text();
+	});
+	return authors;
+}
+
 var scrapeBookPage = function(bookURL, cb) {
 	request.get(bookURL, {encoding: null}, function(err, res, body) {
 		if (err || res.statusCode != 200) {
@@ -83,7 +91,7 @@ var scrapeBookPage = function(bookURL, cb) {
 
 		var book = {
 			title: $("h1[itemprop=name]").text().trim(),
-			author: $(".subtitle > .author  strong").text(),
+			authors: getAuthors($),
 			publisher: $(".publisher > a").text(),
 			ISBN: getISBN($),
 			pubYear: getPubYear($),
